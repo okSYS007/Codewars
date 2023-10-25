@@ -1,16 +1,11 @@
-//Stop gninnipS My sdroW!
-// Write a function that takes in a string of one or more words,
-// and returns the same string, but with all five or more letter words reversed
-// (Just like the name of this Kata). Strings passed in will consist of only letters and spaces.
-// Spaces will be included only when more than one word is present.
-// spinWords( "Hey fellow warriors" ) => returns "Hey wollef sroirraw"
-// spinWords( "This is a test") => returns "This is a test"
-// spinWords( "This is another test" )=> returns "This is rehtona test"
+//List Filtering
 
 //первый символ chatAt это 0 символ, остальные символы slice полсе 0 символа
-function spinWords(string) {
-  return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
+function spinWords(l) {
+  return l
 }
 
-console.log(spinWords("Welcome")) //"emocleW"
-console.log(spinWords("Hey fellow warriors")) // "Hey wollef sroirraw");
+console.log(spinWords([1,2,'aasf','1','123',123])) // [1,2,123]
+
+console.log(spinWords([1,2,'a','b'])) // == [1,2])
+console.log(spinWords([1,'a','b',0,15])) // == [1,0,15]
