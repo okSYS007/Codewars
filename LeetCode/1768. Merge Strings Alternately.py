@@ -27,22 +27,31 @@
 # 1 <= word1.length, word2.length <= 100
 # word1 and word2 consist of lowercase English letters.
 
-
 class Solution:
     def mergeAlternately(self, word1: str, word2: str) -> str:
         rez = []
 
-        len_word1 = len(word1)
-        len_word2 = len(word2)
-
-        if len_word1 == len_word2:
+        first = len(word1) >= len(word2)
+        
+        if first:
             c = 0
-            for first in word1:
-                c = c + 1
-                rez.append(first)
-                rez.insert(len(rez), word2[c-1])
-                
-        return str(rez)
+            for w in word1:
+                c += 1
+                rez.append(w)
+                if c - 1 < len(word2):
+                    rez.insert(len(rez), word2[c-1])
+        else:
+            c = 0
+            for w in word1:
+                c += 1
+                rez.append(w)
+                if c - 1 < len(word2):
+                    rez.insert(len(rez), word2[c-1])
+
+        res = ""
+        for r in rez:
+            res += r
+        return str(res)
 
 Sol = Solution()
 word1 = "abc"
@@ -51,7 +60,10 @@ print(Sol.mergeAlternately(word1, word2)) #"apbqcr"
 
 Sol = Solution()
 word1 = "ab"
-word2 = "pqr"
-print(Sol.mergeAlternately(word1, word2)) #"apbqcr"
+word2 = "pqrs"
+print(Sol.mergeAlternately(word1, word2)) #"apbqrs"
 
-
+Sol = Solution()
+word1 = "abcd"
+word2 = "pq"
+print(Sol.mergeAlternately(word1, word2)) #"apbqcd"
