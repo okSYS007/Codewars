@@ -31,13 +31,27 @@
 class Solution:
     def mergeAlternately(self, word1: str, word2: str) -> str:
         rez = []
-        list(set(word1))
-        list(set(word2))
 
-        pass
+        len_word1 = len(word1)
+        len_word2 = len(word2)
+
+        if len_word1 == len_word2:
+            c = 0
+            for first in word1:
+                c = c + 1
+                rez.append(first)
+                rez.insert(len(rez), word2[c-1])
+                
+        return str(rez)
 
 Sol = Solution()
 word1 = "abc"
 word2 = "pqr"
 print(Sol.mergeAlternately(word1, word2)) #"apbqcr"
+
+Sol = Solution()
+word1 = "ab"
+word2 = "pqr"
+print(Sol.mergeAlternately(word1, word2)) #"apbqcr"
+
 
