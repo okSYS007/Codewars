@@ -8,8 +8,8 @@
 
 # Ограничение по количеству символов: 60(CoffeeScript), 85(JavaScript, Python), 161(Java).
 
-def find(array, element):
-    return array.index(element) if element in array else 'Not found'
+def find(a,e):
+    return a.index(e) if e in a else 'Not found'
 
 
 array = [2,3,5,7,11]
