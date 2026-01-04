@@ -6,7 +6,7 @@
 
 # Можно предположить, что все элементы массива уникальны.
 
-# Ограничение по количеству символов: 60(CoffeeScript), 85(JavaScript, Python), 161(Java).
+# Ограничение по количеству символов: 85(JavaScript, Python)
 
 def find(a,e):
     return a.index(e) if e in a else 'Not found'
