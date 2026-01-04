@@ -11,7 +11,6 @@
 def find(a,e):
     return a.index(e) if e in a else 'Not found'
 
-
 array = [2,3,5,7,11]
 print("")
 print(find(array, 5))# 2
@@ -19,4 +18,3 @@ print(find(array, 11)) # 4
 print(find(array, 3)) # 1
 print(find(array, 2)) # 0
 print(find(array, 8)) # 0
-
