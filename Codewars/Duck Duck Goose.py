@@ -1,4 +1,6 @@
 
+from dataclasses import dataclass
+
 # Цель игры «Утка, утка, гусь» — ходить по кругу , постукивая по голове каждого игрока, пока не будет выбран один из них.
 
 # Имея массив объектов Player и позицию (первая позиция равна 1), верните идентификатор nameвыбранного игрока.
@@ -8,8 +10,12 @@
 # duck_duck_goose([a, b, c, d], 4) should return d.name
 
 def duck_duck_goose(players, goose):
-    pass
+    if not players:
+        return None
+    index = (goose - 1) % len(players)
+    return players[index].name
 
+@dataclass
 class Player:
     name: str
 
