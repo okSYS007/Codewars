@@ -23,9 +23,14 @@
 # If a = 3, b = 5, and margin = 0, then close_compare(a, b, margin) should return -1.
 # This is because the distance between a and b is greater than 0, and a is less than b.
 
-def close_compare(a, b, margin):
-    pass
-
+def close_compare(a, b, margin=0):
+    distance = abs(a - b)
+    if distance <= margin:
+        return 0
+    elif a < b:
+        return -1
+    else:
+        return 1
 
 # test.assert_equals(close_compare(4, 5), -1)
 # test.assert_equals(close_compare(5, 5), 0)
