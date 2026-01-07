@@ -20,7 +20,7 @@
 # верните целое число. Округлите в меньшую сторону.
 
 def duty_free(price, discount, holiday_cost):
-    return price
+    return int(holiday_cost / price * discount / 100)
 
 
 # test.assert_equals(duty_free(12, 50, 1000), 166)
