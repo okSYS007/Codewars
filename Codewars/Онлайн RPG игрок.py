@@ -16,10 +16,7 @@
 # В противном случае вернуть значение False/false(в соответствии с используемым языком).
 
 def player_rank_up(pts):
-     if pts >= 100:
-         return "Well done! You have advanced to the qualifying stage. Win 2 out of your next 3 games to rank up."
-     else:
-         return False
+    return "Well done! You have advanced to the qualifying stage. Win 2 out of your next 3 games to rank up." if pts >= 100 else False
 
 # test.assert_equals(player_rank_up(64), False)
 # test.assert_equals(player_rank_up(180), "Well done! You have advanced to the qualifying stage. Win 2 out of your next 3 games to rank up.")
