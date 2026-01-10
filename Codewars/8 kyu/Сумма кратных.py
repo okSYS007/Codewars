@@ -12,3 +12,6 @@
 # sumMul(3, 13)  ==> 3 + 6 + 9 + 12 = 30
 # sumMul(4, 123) ==> 4 + 8 + 12 + ... = 1860
 # sumMul(4, -7)  ==> "INVALID"
+
+def sum_mul(n, m):
+    return sum(i for i in range(n, m, n)) if n > 0 and m > 0 else "INVALID"
