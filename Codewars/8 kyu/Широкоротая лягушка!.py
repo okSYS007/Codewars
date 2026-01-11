@@ -15,6 +15,6 @@
 # верните значение, smallв противном случае верните значение wide.
 
 
-def mouth_size(animal): 
-    pass
+def mouth_size(animal):    
+    return 'small' if animal.lower() == 'alligator' else 'wide'
 
