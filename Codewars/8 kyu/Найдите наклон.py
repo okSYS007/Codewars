@@ -1,0 +1,21 @@
+# Дан массив из 4 целых чисел,
+# [a,b,c,d]представляющих две точки (a, b)и (c, d). Верните строковое представление наклона прямой, соединяющей эти две точки.
+
+# В случае неопределенного наклона (деление на 0) верните значение undefined . Обратите внимание, что значение "undefined" чувствительно к регистру.
+
+#    a:x1
+#    b:y1
+#    c:x2
+#    d:y2
+# Предположим, что [a,b,c,d]и наклон — целые числа (без плавающих чисел!). Наклон: https://en.wikipedia.org/wiki/Slope
+
+def find_slope(points):
+    x1, y1, x2, y2 = points
+    if x2 - x1 == 0:
+        return "undefined"
+    else:
+        slope = (y2 - y1) / (x2 - x1)
+        if slope.is_integer():
+            return str(int(slope))
+        else:
+            return str(slope)
