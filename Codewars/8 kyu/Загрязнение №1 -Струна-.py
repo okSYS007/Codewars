@@ -14,3 +14,5 @@
 # character   = "z"
 # text after  = "zzz"
 
+def contamination(text, char):
+    return char * len(text)
