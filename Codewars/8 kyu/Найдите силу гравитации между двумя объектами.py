@@ -34,5 +34,16 @@
 
 # Возвращаемое значение силы должно быть в Ньютонах (очевидно).
 
-def solution(arr_val, arr_unit) :
-    return (6.67 * 10 ** -11) * (arr_val[0] * arr_val[1]) / (arr_val[2] ** 2)
+def solution(arr_val, arr_unit):
+    # Convert masses to kg
+    mass_units = {'kg': 1, 'g': 1e-3, 'mg': 1e-6, 'μg': 1e-9, 'lb': 0.453592}
+    m1_kg = arr_val[0] * mass_units[arr_unit[0]]
+    m2_kg = arr_val[1] * mass_units[arr_unit[1]]
+    
+    # Convert distance to meters
+    distance_units = {'m': 1, 'cm': 0.01, 'mm': 0.001, 'μm': 1e-6, 'ft': 0.3048}
+    r_m = arr_val[2] * distance_units[arr_unit[2]]
+    
+    # Calculate gravitational force
+    G = 6.67e-11  # N⋅kg^-2⋅m^2
+    return G * (m1_kg * m2_kg) / (r_m ** 2)
