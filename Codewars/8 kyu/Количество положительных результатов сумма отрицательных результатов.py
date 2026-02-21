@@ -7,3 +7,5 @@
 # Пример
 # В качестве входных данных [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -11, -12, -13, -14, -15]следует вернуть [10, -65].
 
+def count_positives_sum_negatives(arr):
+    return [len([x for x in arr if x > 0]), sum(x for x in arr if x < 0)] if arr else []
