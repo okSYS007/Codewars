@@ -17,3 +17,5 @@
 # guessBlue()Функция должна возвращать вероятность вытягивания синего шарика, выраженную в виде числа с плавающей запятой. 
 # Например, guessBlue(5, 5, 2, 3)она должна возвращать 0.6.
 
+def guess_blue(blue_start, red_start, blue_pulled, red_pulled):
+    return (blue_start - blue_pulled) / ((blue_start - blue_pulled) + (red_start - red_pulled))
