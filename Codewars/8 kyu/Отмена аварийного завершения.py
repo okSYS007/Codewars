@@ -19,7 +19,7 @@
 # alias_gen('123abc', 'Petrovic') == 'Your name must start with a letter from A - Z.'
 # Удачного хакинга!
 
-from preloaded import FIRST_NAME, SURNAME
+#from preloaded import FIRST_NAME, SURNAME
 
 def alias_gen(f_name: str, l_name: str) -> str:
     if not f_name or not l_name:
