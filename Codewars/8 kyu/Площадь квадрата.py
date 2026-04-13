@@ -6,4 +6,4 @@
 import math
 
 def square_area(a):
-    return round((a / math.pi) ** 2, 2)
+    return 4 * (a / math.pi) ** 2
