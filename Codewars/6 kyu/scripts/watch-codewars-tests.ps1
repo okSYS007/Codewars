@@ -1,62 +1,37 @@
 param(
     [string]$Path = (Resolve-Path "$PSScriptRoot\..").Path,
-    [int]$DebounceSeconds = 4,
-    [string]$Branch = ""
+    [int]$DebounceSeconds = 2
 )
 
 $ErrorActionPreference = "Stop"
 $Path = (Resolve-Path -LiteralPath $Path).Path
 Set-Location -LiteralPath $Path
 
-function Invoke-GitAutopush {
+function Convert-CodewarsTestsIfNeeded {
     param([string]$ChangedPath)
 
     if (-not (Test-Path -LiteralPath $ChangedPath -PathType Leaf)) {
         return
     }
 
-    $extension = [System.IO.Path]::GetExtension($ChangedPath)
-    if ($extension -ne ".py") {
+    if ([System.IO.Path]::GetExtension($ChangedPath) -ne ".py") {
         return
     }
 
-    $relativePath = Resolve-Path -LiteralPath $ChangedPath -Relative
-    $status = git status --porcelain -- "$ChangedPath"
-    if ([string]::IsNullOrWhiteSpace($status)) {
+    $content = Get-Content -Raw -LiteralPath $ChangedPath
+    if ($content -notmatch "test\.assert_equals\(") {
         return
     }
 
-    git add -- "$ChangedPath"
-
-    $fileName = [System.IO.Path]::GetFileNameWithoutExtension($ChangedPath)
-    $message = "kata: update $fileName"
-    git commit -m $message
-
-    if ([string]::IsNullOrWhiteSpace($Branch)) {
-        git push
-    }
-    else {
-        git push origin $Branch
-    }
-
-    Write-Host "Pushed $relativePath"
+    uv run python "$PSScriptRoot\convert_codewars_tests.py" "$ChangedPath"
 }
 
-Write-Host "Watching $Path for Python kata changes. Press Ctrl+C to stop."
-
-Get-ChildItem -LiteralPath $Path -Filter "*.py" -File -Recurse | ForEach-Object {
-    try {
-        Invoke-GitAutopush -ChangedPath $_.FullName
-    }
-    catch {
-        Write-Warning "Autopush failed for $($_.FullName): $($_.Exception.Message)"
-    }
-}
+Write-Host "Watching $Path for pasted Codewars tests. Press Ctrl+C to stop."
 
 $watcher = New-Object System.IO.FileSystemWatcher
 $watcher.Path = $Path
 $watcher.Filter = "*.py"
-$watcher.IncludeSubdirectories = $true
+$watcher.IncludeSubdirectories = $false
 $watcher.EnableRaisingEvents = $true
 
 $pending = @{}
@@ -90,10 +65,10 @@ try {
         foreach ($changedPath in $ready) {
             $pending.Remove($changedPath)
             try {
-                Invoke-GitAutopush -ChangedPath $changedPath
+                Convert-CodewarsTestsIfNeeded -ChangedPath $changedPath
             }
             catch {
-                Write-Warning "Autopush failed for ${changedPath}: $($_.Exception.Message)"
+                Write-Warning "Test conversion failed for ${changedPath}: $($_.Exception.Message)"
             }
         }
     }
