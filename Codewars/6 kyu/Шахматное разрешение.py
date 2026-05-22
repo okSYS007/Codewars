@@ -66,3 +66,15 @@ def count_checkerboard(width, height, resolution):
         black_cells += rem_x * rem_y
 
     return black_cells
+
+
+# --- local tests ---
+# test.count_checkerboard((11, 6, 1), 33)
+# test.count_checkerboard((11, 6, 2), 32)
+# test.count_checkerboard((11, 6, 5), 31)
+# test.count_checkerboard((9, 5, 2), 22)
+# test.count_checkerboard((9, 5, 4), 21)
+# test.count_checkerboard((9, 5, 8), 5)
+# test.count_checkerboard((0, 123, 1), 0)
+# test.count_checkerboard((445, 998, 101010), 0)
+# test.count_checkerboard((123456, 7654321, 333), 472485924597)
