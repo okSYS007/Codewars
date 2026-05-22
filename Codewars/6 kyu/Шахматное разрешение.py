@@ -35,11 +35,34 @@
 # 1 <= resolution <= 10**32
 
 def count_checkerboard(width, height, resolution):
-    # Calculate the number of black squares in the width and height
-    black_squares_width = (width + resolution) // (2 * resolution)
-    black_squares_height = (height + resolution) // (2 * resolution)
+    if width == 0 or height == 0:
+        return 0
 
-    # Total number of black squares is the product of the two
-    total_black_squares = black_squares_width * black_squares_height
+    bx, rem_x = divmod(width, resolution)
+    by, rem_y = divmod(height, resolution)
 
-    return total_black_squares
+    # Count full resolution-blocks and multiply by resolution^2
+    black_full_blocks = (bx * by) // 2
+    black_cells = black_full_blocks * resolution * resolution
+
+    # Partial vertical strip at the right edge
+    if rem_x:
+        if bx % 2 == 0:
+            black_rows = by // 2
+        else:
+            black_rows = (by + 1) // 2
+        black_cells += rem_x * resolution * black_rows
+
+    # Partial horizontal strip at the bottom edge
+    if rem_y:
+        if by % 2 == 0:
+            black_cols = bx // 2
+        else:
+            black_cols = (bx + 1) // 2
+        black_cells += resolution * rem_y * black_cols
+
+    # Bottom-right corner partial block
+    if rem_x and rem_y and ((bx + by) % 2 == 1):
+        black_cells += rem_x * rem_y
+
+    return black_cells
