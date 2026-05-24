@@ -15,3 +15,35 @@
 # (просто рассматривайте заглавные и строчные буквы как разные сущности), а также могут быть довольно длинными (следите за производительностью!).
 
 # Если вам понравилось, переходите либо к предыдущей , либо к следующей ката из этой серии!
+
+def has_subpattern(st):
+    from collections import Counter
+    from math import gcd
+    from functools import reduce
+
+    return reduce(gcd, Counter(st).values()) > 1
+
+# --- local tests ---
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(has_subpattern, [
+        (('a',), False),
+        (('AA',), True),
+        (('444',), True),
+        (('aaaa',), True),
+        (('abcd',), False),
+        (('babababababababa',), True),
+        (('bbabbaaabbaaaabb',), True),
+        (('ababababa',), False),
+        (('aaaabb',), True),
+        (('abbb',), False),
+        (('123a123a123a',), True),
+        (('123A123a123a',), False),
+        (('12aa13a21233',), True),
+        (('12aa13a21233A',), False),
+        (('aabbbbbbaa',), True),
+        (('abcdabcaccd',), False),
+        (('aaabbbccccdddddd',), False),
+        (('aaabbbccccdddddddd',), False),
+    ])
