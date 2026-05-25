@@ -10,3 +10,36 @@
 # Дополнительные примеры приведены в тестовых примерах.
 
 # Удачи.
+
+def solve(st):
+    if len(st) % 2:
+        return -1
+
+    open_count = close_count = 0
+    for char in st:
+        if char == "(":
+            open_count += 1
+        elif open_count:
+            open_count -= 1
+        else:
+            close_count += 1
+
+    return (open_count + 1) // 2 + (close_count + 1) // 2
+
+# --- local tests ---
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(solve, [
+        (("",), 0),
+        (("()",), 0),
+        (("(())",), 0),
+        ((')()(',), 2),
+        (('((()',), 1),
+        (('(((',), -1),
+        (("))((",), 2),
+        (('())(((',), 3),
+        (('())()))))()()(',), 4),
+        (("(" * 1000 + ")" * 1000,), 0),
+        ((")" * 1000 + "(" * 1000,), 1000),
+    ])
