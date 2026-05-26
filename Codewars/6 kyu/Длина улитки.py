@@ -31,3 +31,36 @@
 
 # https://www.codewars.com/kata/6a09adfba86f8cc17c7eeada/train/python
 
+
+def snail_length(x, y):
+    ring = max(abs(x), abs(y))
+    if ring == 0:
+        return 0
+
+    first = (2 * ring - 1) ** 2
+
+    if x == ring and y > -ring:
+        return first + y + ring - 1
+    if y == ring:
+        return first + 2 * ring - 1 + ring - x
+    if x == -ring:
+        return first + 4 * ring - 1 + ring - y
+    return first + 6 * ring - 1 + x + ring
+
+
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(snail_length, [
+        ((0, 0), 0),
+        ((1, 0), 1),
+        ((1, 1), 2),
+        ((-1, 1), 4),
+        ((1, -1), 8),
+        ((-2, -1), 19),
+        ((8, 10), 382),
+        ((10, 10), 380),
+        ((10, -10), 440),
+        ((123456, -123456), 60966029568),
+    ])
+
