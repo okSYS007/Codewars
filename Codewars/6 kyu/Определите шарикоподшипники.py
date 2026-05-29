@@ -31,4 +31,48 @@
 # Примечание: модули sysотключены inspect.
 
 def identify_bb(bearings, weigh):
-    pass
+    samples = []
+    normal_weight = 0
+
+    for count, bearing in enumerate(bearings, 1):
+        samples.extend([bearing] * count)
+        normal_weight += count * 10
+
+    deluxe_count = weigh(*samples) - normal_weight
+    return bearings[deluxe_count - 1]
+
+
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    def make_weigh(deluxe):
+        used = False
+
+        def weigh(*items):
+            nonlocal used
+            if used:
+                raise AssertionError("weigh can only be used once")
+            used = True
+            return sum(11 if item == deluxe else 10 for item in items)
+
+        return weigh
+
+    def check_case(data):
+        bearings, deluxe = data
+        return identify_bb(bearings, make_weigh(deluxe))
+
+    large = list(range(1, 201))
+
+    run_tests(check_case, [
+        (((["a"], "a"),), "a"),
+        (((["a", "b"], "a"),), "a"),
+        (((["a", "b"], "b"),), "b"),
+        (((["a", "b", "c"], "c"),), "c"),
+        ((((10, 20, 30, 40, 50), 30),), 30),
+        (((list("abcdefghi"), "e"),), "e"),
+        (((large, 1),), 1),
+        (((large, 137),), 137),
+        (((large, 200),), 200),
+    ])
+
+
