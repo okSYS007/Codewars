@@ -34,3 +34,30 @@
 # Примечание: стратегия игрока не должна требовать глобальных переменных или состояния. Тесты проверят, что стратегия остается согласованной даже при вызове в неожиданное время.
 
 # Удачи!
+
+
+def guess_colour(guesses, hats):
+    red_hats = sum(hat == "Red" for hat in hats)
+
+    if not guesses:
+        return "Red" if red_hats % 2 else "Blue"
+
+    red_hats += sum(guess == "Red" for guess in guesses[1:])
+    expected_odd = guesses[0] == "Red"
+    return "Red" if red_hats % 2 != expected_odd else "Blue"
+
+
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(guess_colour, [
+        (([], []), "Blue"),
+        (([], ["Red"]), "Red"),
+        (([], ["Red", "Blue", "Red"]), "Blue"),
+        ((["Blue"], ["Blue", "Blue"]), "Blue"),
+        ((["Red"], ["Blue", "Blue"]), "Red"),
+        ((["Red", "Blue"], ["Red", "Blue"]), "Blue"),
+        ((["Blue", "Red"], ["Blue"]), "Red"),
+        ((["Red", "Blue", "Red"], []), "Blue"),
+        (([], ["Red"] * 999), "Red"),
+    ])
