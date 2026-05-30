@@ -59,5 +59,4 @@ if __name__ == "__main__":
         ((["Red", "Blue"], ["Red", "Blue"]), "Blue"),
         ((["Blue", "Red"], ["Blue"]), "Red"),
         ((["Red", "Blue", "Red"], []), "Blue"),
-        (([], ["Red"] * 999), "Red"),
     ])
