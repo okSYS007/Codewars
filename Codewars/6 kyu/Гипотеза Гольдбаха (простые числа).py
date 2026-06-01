@@ -19,3 +19,35 @@
 
 # Все пары должны быть расположены в порядке возрастания, начиная с первого элемента пары: [[5, 13], [7, 11]]принимается, а [[7, 11], [5, 13]]не принимается.
 
+def goldbach(even_number):
+    def is_prime(n):
+        if n < 2:
+            return False
+        for i in range(2, int(n**0.5) + 1):
+            if n % i == 0:
+                return False
+        return True
+
+    primes = [i for i in range(2, even_number) if is_prime(i)]
+    pairs = []
+    for prime in primes:
+        complement = even_number - prime
+        if complement >= prime and is_prime(complement):
+            pairs.append([prime, complement])
+    return pairs
+
+# --- local tests ---
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(goldbach, [
+        ((2,), []),
+        ((4,), [[2, 2]]),
+        ((6,), [[3, 3]]),
+        ((8,), [[3, 5]]),
+        ((10,), [[3, 7], [5, 5]]),
+        ((52,), [[5, 47], [11, 41], [23, 29]]),
+        ((54,), [[7, 47], [11, 43], [13, 41], [17, 37], [23, 31]]),
+        ((56,), [[3, 53], [13, 43], [19, 37]]),
+        ((58,), [[5, 53], [11, 47], [17, 41], [29, 29]]),
+    ])
