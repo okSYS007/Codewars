@@ -33,4 +33,57 @@
 
 
 def frame(balls):
-    return 147
+    scores = {
+        'R': 1,
+        'Y': 2,
+        'G': 3,
+        'Bn': 4,
+        'Be': 5,
+        'P': 6,
+        'Bk': 7,
+        'W': 0,
+    }
+
+    total = 0
+    i = 0
+    n = len(balls)
+
+    while i < n:
+        if balls[i] == 'B' and i + 1 < n and balls[i + 1] in {'n', 'e', 'k'}:
+            ball = balls[i:i + 2]
+            i += 2
+        else:
+            ball = balls[i]
+            i += 1
+
+        count_start = i
+        while i < n and balls[i].isdigit():
+            i += 1
+
+        count = int(balls[count_start:i]) if count_start < i else 1
+
+        if ball == 'W':
+            return 'Foul'
+
+        total += scores.get(ball, 0) * count
+
+    if total > 147:
+        return 'invalid data'
+
+    return total
+
+
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(frame, [
+        (('R15P3G1Bk4Y1Bn1Be3',), 85),
+        (('R13Bk14YRGBnBkRBePBk1',), 147),
+        (('G9G11P9Bn2Bn1Be10G7WBn10G3',), 'Foul'),
+        (('Bn14Bn14Bn8P9',), 'invalid data'),
+        (('R',), 1),
+        (('Be2Bk3',), 5 * 2 + 7 * 3),
+        (('W1',), 'Foul'),
+        (('Y10G10',), 2 * 10 + 3 * 10),
+        (('Bk21',), 'invalid data'),
+    ])
