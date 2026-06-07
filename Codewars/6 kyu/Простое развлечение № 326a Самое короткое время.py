@@ -52,14 +52,46 @@
 # Это голландские полы. Они пронумерованы от 0 ( 0обычно их называют "begane grond").
 
 def shorterest_time(n, m, speeds):
-    a, b, c, d = speeds
+    elevator_speed, open_time, close_time, walk_speed = speeds
+
     if n == 0:
         return 0
-    elif m == n:
-        return b + c + a * n + b
-    elif m < n:
-        return min(a * abs(m - n) + b + c + a * n + b, d * n)
-    else:
-        return min(a * abs(m - n) + b + c + a * n + b, d * n)
-    
-    
+
+    stairs_only = n * walk_speed
+    wait_for_elevator = (
+        abs(m - n) * elevator_speed
+        + open_time
+        + close_time
+        + n * elevator_speed
+        + open_time
+    )
+
+    best = min(stairs_only, wait_for_elevator)
+    if m < n:
+        walk_to_elevator = (
+            (n - m) * walk_speed
+            + open_time
+            + close_time
+            + m * elevator_speed
+            + open_time
+        )
+        best = min(best, walk_to_elevator)
+
+    return best
+
+# --- local tests ---
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(shorterest_time, [
+        ((4, 5, [1, 2, 3, 10]), 12),
+        ((0, 5, [1, 2, 3, 10]), 0),
+        ((4, 4, [1, 2, 3, 10]), 11),
+        ((1, 1, [1, 2, 3, 10]), 8),
+        ((1, 1, [2, 3, 4, 10]), 10),
+        ((4, 3, [1, 2, 3, 10]), 12),
+        ((4, 3, [2, 3, 4, 5]), 20),
+        ((7, 6, [3, 1, 1, 4]), 25),
+        ((10, 0, [1, 2, 3, 2]), 15),
+        ((1000000, 999999, [1, 1, 1, 10]), 1000002),
+    ])
