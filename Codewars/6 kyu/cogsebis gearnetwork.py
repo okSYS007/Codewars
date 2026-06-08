@@ -34,3 +34,46 @@
 # // Returns: [100.0, -50.0, 20.0, 100.0]
 # Если возникла проблема или ошибка, оставьте комментарий.
 
+from collections import deque
+
+
+def cogsebi(gears, connections, driver_id, driver_rpm):
+    graph = [[] for _ in gears]
+    for a, b in connections:
+        graph[a].append(b)
+        graph[b].append(a)
+
+    rpms = [0.0] * len(gears)
+    rpms[driver_id] = float(driver_rpm)
+
+    queue = deque([driver_id])
+    seen = {driver_id}
+
+    while queue:
+        current = queue.popleft()
+
+        for neighbour in graph[current]:
+            if neighbour in seen:
+                continue
+
+            rpms[neighbour] = -rpms[current] * gears[current] / gears[neighbour]
+            seen.add(neighbour)
+            queue.append(neighbour)
+
+    return rpms
+
+
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(cogsebi, [
+        (([10, 20, 50, 10], [[0, 1], [1, 2], [1, 3]], 0, 100.0), [100.0, -50.0, 20.0, 100.0]),
+        (([10], [], 0, 75), [75.0]),
+        (([10, 20], [[0, 1]], 0, 60), [60.0, -30.0]),
+        (([10, 20], [[0, 1]], 1, 60), [-120.0, 60.0]),
+        (([12, 24, 36, 48], [[0, 1], [1, 2]], 0, 90), [90.0, -45.0, 30.0, 0.0]),
+        (([8, 16, 32, 64], [[0, 1], [1, 2], [2, 3]], 0, 128), [128.0, -64.0, 32.0, -16.0]),
+        (([30, 10, 15, 45, 90], [[2, 1], [1, 0], [1, 3], [3, 4]], 2, 75.0), [37.5, -112.5, 75.0, 25.0, -12.5]),
+        (([100, 25, 50, 20, 10], [[0, 1], [0, 2], [2, 3], [2, 4]], 0, 10.0), [10.0, -40.0, -20.0, 50.0, 100.0]),
+        (([5, 10, 20, 40, 80, 160], [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]], 0, 320.0), [320.0, -160.0, 80.0, -40.0, 20.0, -10.0]),
+    ])
