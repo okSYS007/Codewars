@@ -16,22 +16,31 @@
 
 
 def eq_all(iterable):
-    pass
+    iterator = iter(iterable)
 
-#  test.assert_equals(eq_all(''), True, "For ''")
-#         test.assert_equals(eq_all([]), True, 'For []')
-#         test.assert_equals(eq_all(()), True, 'For ()')
-#         test.assert_equals(eq_all(set()), True, 'For set()')
-#         test.assert_equals(eq_all({}), True, 'For {}')
+    try:
+        first = next(iterator)
+    except StopIteration:
+        return True
 
-#  test.assert_equals(eq_all('aaa'), True, "For 'aaa'")
-#         test.assert_equals(eq_all([0, 0, 0]), True, 'For [0, 0, 0]')
-#         test.assert_equals(eq_all(('A', 'A', 'A')), True, "For ('A', 'A', 'A')")
-#         test.assert_equals(eq_all({2}), True, "For {2}")
-#         test.assert_equals(eq_all({'a': 32}), True, "For {'a': 32}")
+    return all(item == first for item in iterator)
 
-#  test.assert_equals(eq_all('abc'), False, "For 'abc'")
-#         test.assert_equals(eq_all([0, 1, 2]), False, 'For [0, 1, 2]')
-#         test.assert_equals(eq_all(('A', 'A', 'a')), False, "For ('A', 'A', 'a')")
-#         test.assert_equals(eq_all({2, 3}), False, "For {2, 3}")
-#         test.assert_equals(eq_all({'a': 32, 'A': 32}), False, "For {'a': 32, 'A': 32}")
+# --- local tests ---
+if __name__ == "__main__":
+    from itertools import chain, repeat
+
+    from scripts.kata_check import run_tests
+
+    run_tests(eq_all, [
+        (('',), True),
+        (([],), True),
+        (('aaa',), True),
+        (('abc',), False),
+        (([0, 0, 0],), True),
+        (([0, 1, 2],), False),
+        ((('A', 'A', 'A'),), True),
+        ((('A', 'A', 'a'),), False),
+        (({'a': 32, 'A': 32},), False),
+        ((iter([1, 1, 1]),), True),
+        ((chain(repeat(7, 1000), (8,), repeat(7)),), False),
+    ])
