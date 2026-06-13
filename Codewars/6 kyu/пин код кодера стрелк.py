@@ -42,6 +42,105 @@
 
 
 def coding_arrow_pin_code(arr):
-    # Warrior, to arms
-    return ""
+    keypad = {
+        0: (0, 0),
+        1: (0, 1),
+        2: (1, 1),
+        3: (2, 1),
+        4: (0, 2),
+        5: (1, 2),
+        6: (2, 2),
+        7: (0, 3),
+        8: (1, 3),
+        9: (2, 3),
+    }
+    digit_at = {coords: digit for digit, coords in keypad.items()}
+    arrows = {
+        (1, 1): "↗",
+        (-1, 1): "↖",
+        (1, -1): "↘",
+        (-1, -1): "↙",
+        (1, 0): "→",
+        (-1, 0): "←",
+        (0, 1): "↑",
+        (0, -1): "↓",
+    }
+
+    def shortest_path(start, finish):
+        if start == finish:
+            return []
+
+        queue = [(start, [])]
+        shortest = None
+        paths = []
+
+        for current, path in queue:
+            if shortest is not None and len(path) >= shortest:
+                continue
+
+            x, y = keypad[current]
+            for dx, dy in arrows:
+                next_digit = digit_at.get((x + dx, y + dy))
+                if next_digit is None or next_digit in path or next_digit == start:
+                    continue
+
+                next_path = path + [next_digit]
+                if next_digit == finish:
+                    shortest = len(next_path)
+                    paths.append(next_path)
+                else:
+                    queue.append((next_digit, next_path))
+
+        key = max if 0 in (start, finish) else min
+        return key(paths)
+
+    result = [str(arr[0])]
+    current = arr[0]
+    run_length = 1
+
+    for digit in arr[1:]:
+        if digit == current:
+            run_length += 1
+            continue
+
+        while run_length > 1:
+            repeat = min(9, run_length - 1)
+            result.append(f"*{repeat}")
+            run_length -= repeat
+
+        path = shortest_path(current, digit)
+        for intermediate in path[:-1]:
+            x1, y1 = keypad[current]
+            x2, y2 = keypad[intermediate]
+            result.append(arrows[(x2 - x1, y2 - y1)])
+            result.append("d")
+            current = intermediate
+
+        x1, y1 = keypad[current]
+        x2, y2 = keypad[digit]
+        result.append(arrows[(x2 - x1, y2 - y1)])
+        current = digit
+        run_length = 1
+
+    while run_length > 1:
+        repeat = min(9, run_length - 1)
+        result.append(f"*{repeat}")
+        run_length -= repeat
+
+    return "".join(result)
+
+
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(coding_arrow_pin_code, [
+        (([1, 5, 9, 6],), "1↗↗↓"),
+        (([1, 6, 2, 3],), "1→d↗↙→"),
+        (([1, 6, 4, 3],), "1→d↗↙d↖↘d→"),
+        (([1, 7, 0, 7],), "1↑d↑↘d↓d↙↗d↑d↖"),
+        (([1, 7, 7, 7],), "1↑d↑*2"),
+        (([0, 1, 1, 2, 3, 5, 8],), "0↑*1→→↖↑"),
+        (([2, 1, 3, 4, 7],), "2←→d→←d↖↑"),
+        (([9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 7],), "9*9←←"),
+    ])
 
