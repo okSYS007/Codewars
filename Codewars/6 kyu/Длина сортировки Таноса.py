@@ -62,22 +62,39 @@
 
 
 def thanos_sort(arr):
-    #Good luck!
-    pass
+    def is_sorted(start, end):
+        return all(arr[i] <= arr[i + 1] for i in range(start, end - 1))
+
+    def best_length(start, end):
+        length = end - start
+        if length <= 1 or is_sorted(start, end):
+            return length
+
+        middle = start + (length + 1) // 2
+        return max(best_length(start, middle), best_length(middle, end))
+
+    return best_length(0, len(arr))
 
 
-# test.assert_equals(thanos_sort([]), 0, f"Failed for arr = {[]}")
-#         test.assert_equals(thanos_sort([5]), 1, f"Failed for arr = {[5]}")
-#         test.assert_equals(thanos_sort([2,1]), 1, f"Failed for arr = {[2,1]}")
-#         test.assert_equals(thanos_sort([1,2,3,4,5]), 5, f"Failed for arr = {[1,2,3,4,5]}")
-#         test.assert_equals(thanos_sort([-5,-3,-1,0,2,8]), 6, f"Failed for arr = {[-5,-3,-1,0,2,8]}")
-#         test.assert_equals(thanos_sort([7,7,7,7,7]), 5, f"Failed for arr = {[7,7,7,7,7]}")
-#         test.assert_equals(thanos_sort([1,1,1,1,1,1,1,1]), 8, f"Failed for arr = {[1,1,1,1,1,1,1,1]}")
-#         test.assert_equals(thanos_sort([9,8,7,1,2,3]), 3, f"Failed for arr = {[9,8,7,1,2,3]}")
-#         test.assert_equals(thanos_sort([1,2,3,9,8,7]), 3, f"Failed for arr = {[1,2,3,9,8,7]}")
-#         test.assert_equals(thanos_sort([5,4,3,1,2,6,7,8]), 4, f"Failed for arr = {[5,4,3,1,2,6,7,8]}")
-#         test.assert_equals(thanos_sort([5,4,3,2,1,6,7]), 3, f"Failed for arr = {[5,4,3,2,1,6,7]}")
-#         test.assert_equals(thanos_sort([3,3,3,2,2,2]), 3, f"Failed for arr = {[3,3,3,2,2,2]}")
-#         test.assert_equals(thanos_sort([1,2,3,4,0]), 3, f"Failed for arr = {[1,2,3,4,0]}")
-#         test.assert_equals(thanos_sort([8,7,6,5,4,3,2,1,9,10,11,12]), 3, f"Failed for arr = {[8,7,6,5,4,3,2,1,9,10,11,12]}")
-#         test.assert_equals(thanos_sort([10,9,8,7,1,2,3,4,5,6]), 5, f"Failed for arr = {[10,9,8,7,1,2,3,4,5,6]}")
+if __name__ == "__main__":
+    from scripts.kata_check import run_tests
+
+    run_tests(thanos_sort, [
+        (([],), 0),
+        (([5],), 1),
+        (([2, 1],), 1),
+        (([1, 2, 3, 4, 5],), 5),
+        (([-5, -3, -1, 0, 2, 8],), 6),
+        (([7, 7, 7, 7, 7],), 5),
+        (([1, 1, 1, 1, 1, 1, 1, 1],), 8),
+        (([3, 1, 4, 2],), 1),
+        (([1, 2, 3, 7, 5, 6],), 3),
+        (([9, 8, 7, 1, 2, 3],), 3),
+        (([1, 2, 3, 9, 8, 7],), 3),
+        (([5, 4, 3, 1, 2, 6, 7, 8],), 4),
+        (([5, 4, 3, 2, 1, 6, 7],), 3),
+        (([3, 3, 3, 2, 2, 2],), 3),
+        (([1, 2, 3, 4, 0],), 3),
+        (([8, 7, 6, 5, 4, 3, 2, 1, 9, 10, 11, 12],), 3),
+        (([10, 9, 8, 7, 1, 2, 3, 4, 5, 6],), 5),
+    ])
